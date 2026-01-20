@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .forms import BookingForm
 from datetime import datetime
-from .models import Booking
+from .models import Booking, Menu
+from .serializer import MenuSerializer, BookingSerializer
 from django.core import serializers
+from rest_framework import generics, viewsets
 
 # Create your views here.
 
@@ -26,3 +28,18 @@ def bookings(request):
     bookings = Booking.objects.all()
     booking_json = serializers.serialize("json", bookings)
     render(request, "bookings.html", {"bookings": booking_json})
+
+
+class BookingViewSet(viewsets.ModelViewSet):
+    queryset = Booking.objects.all()  # Modelo
+    serializer_class = BookingSerializer  # Serializer
+
+
+class MenuItemsView(generics.ListCreateAPIView):
+    queryset = Menu.objects.all()  # Modelo
+    serializer_class = MenuSerializer  # Serializer
+
+
+class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Menu.objects.all()  # Modelo
+    serializer_class = MenuSerializer

@@ -7,7 +7,7 @@ class Booking(models.Model):
     nombre = models.CharField(max_length=255)
     dia_de_reserva = models.DateField()
     n_de_personas = models.SmallIntegerField(default=10)
-    fecha_de_reserva = models.DateTimeField(null=True, blank=True)
+    hora_de_reserva = models.TimeField(null=True, blank=True)
 
     def __str__(self):
         return self.first_name
