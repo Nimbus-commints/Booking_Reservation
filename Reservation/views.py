@@ -2,9 +2,11 @@ from django.shortcuts import render
 from .forms import BookingForm
 from datetime import datetime
 from .models import Booking, Menu
-from .serializer import MenuSerializer, BookingSerializer
+from .serializer import MenuSerializer, BookingSerializer, UserSerializer
 from django.core import serializers
 from rest_framework import generics, viewsets
+from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -31,6 +33,7 @@ def bookings(request):
 
 
 class BookingViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Booking.objects.all()  # Modelo
     serializer_class = BookingSerializer  # Serializer
 
@@ -43,3 +46,8 @@ class MenuItemsView(generics.ListCreateAPIView):
 class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Menu.objects.all()  # Modelo
     serializer_class = MenuSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
